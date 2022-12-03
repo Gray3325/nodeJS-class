@@ -1,6 +1,12 @@
 
 
 function sum(n){
-    n+=1;
+    var j=0;
+
+    for(var i=0;i<=n;i++) {
+        j=j+1;
+    }
+    return j;
+    
 }
-console.log(sum(5));
+console.log(sum(3));
