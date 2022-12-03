@@ -1,9 +1,9 @@
 
 
 function sum(n){
-    var j=0;
+    let j=0;
 
-    for(var i=0;i<=n;i++) {
+    for(let i=0;i<=n;i++) {
         j=j+1;
     }
     return j;
