@@ -26,7 +26,7 @@ function finishWork(work1,work2,work3){
     doWork(work2, 8000, (err, data) => {
         console.log(data);
     });
-    doWork(work1, 12000, (err, data) => {
+    doWork(work3, 12000, (err, data) => {
         console.log(data);
       });
 }
