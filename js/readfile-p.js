@@ -20,3 +20,7 @@ let p = new Promise((resolve, reject) => {
 p.then((data)=>{
     console.log(data);
 })
+.catch(()=>{
+    console.log(err);
+
+})
