@@ -5,12 +5,16 @@ const axios = require('axios');
 
 // http://54.71.133.152:3000/stocks?stockNo=2618&date=202211
 (async () => {
-
-    await axios.get('http://54.71.133.152:3000/stocks?stockNo=2618&date=202211')
+    try{
+        await axios.get('http://54.71.133.152:3000/stocks?stockNo=2618&date=202211')
         .then((response) => {
             console.log(response.data);
         })
         .catch((e) => {
             console.error(e);
         });
-})() 
+    }catch{
+        console.error(e);
+    }
+    
+})();
