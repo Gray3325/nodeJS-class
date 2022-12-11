@@ -9,7 +9,7 @@ const axios = require('axios');
         let response = await axios.get('http://54.71.133.152:3000/stocks?stockNo=2618&date=202211')
         
             console.log(response.data);
-    }catch{
+    }catch(e){
         console.error(e);
     }
     
