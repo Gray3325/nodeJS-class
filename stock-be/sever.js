@@ -22,15 +22,15 @@ app.get('/',(req,res,next)=>{
 // localhost:3001/
 // app.use(express.static('./static'));
 // localhost:3001/2048/
-
+// 設定 express 處理靜態檔案
+// -> express 內建 -> 不需要安裝任何東西
+app.use('/2048', express.static('./2048'));
 app.use((req, res, next) => {
     console.log('這裡是的一個中間件 C');
     next();
   });
-  
-  // 設定 express 處理靜態檔案
-// -> express 內建 -> 不需要安裝任何東西
-app.use('/2048', express.static('./2048'));
+
+
 
 app.get('/test',(req,res,next)=>{
     console.log('這是test頁面',req.dt);
