@@ -1,10 +1,11 @@
-const express = require("express");
 
+const express = require("express");
 const app = express();
 
-require("dotenv").config;
+require("dotenv").config();
 const mysql2 = require("mysql2/promise");
 
+console.log('check env', process.env.DB_USER);
 let pool = mysql2.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -14,6 +15,12 @@ let pool = mysql2.createPool({
     // 限制pool連線數的上限
     connectionLimit: 10,
 });
+
+// 允許跨源存取
+// 預設是全部開放
+// 也可以做部分限制，參考 npm cors 的文件
+const cors = require('cors');
+app.use(cors());
 
 // localhost:3001/
 // app.use(express.static('./static'));
@@ -50,13 +57,19 @@ app.get("/api", (req, res, next) => {
         body: "balballb",
     });
 });
-app.get('/api/stocks', async (req, res, next) => {
+app.get("/api/stocks", async (req, res, next) => {
     // let results = await connection.query('SELECT * FROM stocks');
     // let data = results[0];
-    let [data] = await pool.query('SELECT * FROM stocks');
-    // console.log(data);
+    let [data] = await pool.query("SELECT * FROM stocks");
+    console.log("這是api/stocks");
     res.json(data);
-  });
+});
+app.get('/api/stock/:stockId',async(req,res,next)=>{
+    console.log(req.params.stockId);
+    let [data] = await pool.query("SELECT * FROM stocks_prices WHERE stock_id=?",req.params.stockId);
+    console.log("這是api/stocks");
+    res.json(data);
+})
 
 app.get("/test", (req, res, next) => {
     console.log("這是test頁面", req.dt);
