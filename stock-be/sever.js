@@ -2,46 +2,17 @@ const express = require("express");
 
 const app = express();
 
-const mysql2 = require('mysql2/promise');
-require('dotenv').config;
-(async()=>{
-    let connection;
-    try{
-        connection = await mysql2.createConnection({
-        host:process.env.DB_host,
-        // port:DB_port,
-        user:process.env.DB_user,
-        password:process.env.DB_password,
-        database:process.env.DB_database,
-    });
+require("dotenv").config;
+const mysql2 = require("mysql2/promise");
 
-    let [data,fields]=await connection.query('SELECT * FROM `stocks`');
-    // let data=result[0];
-    console.log(data);
-    }catch(e){
-        console.error(e);
-    }finally{
-        if(connection){
-            connection.end();
-        }
-    }
-})();
-// 中間件
-app.use((req, res, next) => {
-    console.log("這裡是一個中間件 A");
-    req.mfee31 = "冷班";
-    next();
-});
-app.use((req, res, next) => {
-    console.log("這裡是一個中間件 B");
-    req.dt = new Date().toISOString();
-    next();
-});
-
-// 路由中間件
-app.get("/", (req, res, next) => {
-    console.log("這是首夜夜夜", req.mfeel31, req.dt);
-    res.send("Hellow Express 9");
+let pool = mysql2.createPool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    // 限制pool連線數的上限
+    connectionLimit: 10,
 });
 
 // localhost:3001/
@@ -54,12 +25,38 @@ app.use((req, res, next) => {
     console.log("這裡是的一個中間件 C");
     next();
 });
+// 中間件
+app.use((req, res, next) => {
+    console.log("這裡是一個中間件 A");
+    req.mfeel31 = "冷班";
+    next();
+});
+app.use((req, res, next) => {
+    console.log("這裡是一個中間件 B");
+    req.dt = new Date().toISOString();
+    next();
+});
+
+// 路由中間件
+// get, post, put, patch, delete, option, head
+app.get("/", (req, res, next) => {
+    console.log("這是首夜夜夜", req.mfeel31, req.dt);
+    res.send("Hellow Express 9");
+});
+
 app.get("/api", (req, res, next) => {
     res.json({
         name: 333,
         body: "balballb",
     });
 });
+app.get('/api/stocks', async (req, res, next) => {
+    // let results = await connection.query('SELECT * FROM stocks');
+    // let data = results[0];
+    let [data] = await pool.query('SELECT * FROM stocks');
+    // console.log(data);
+    res.json(data);
+  });
 
 app.get("/test", (req, res, next) => {
     console.log("這是test頁面", req.dt);
