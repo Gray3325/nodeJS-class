@@ -70,6 +70,7 @@ app.get('/api/stock/:stockId',async(req,res,next)=>{
     console.log("這是api/stocks");
     res.json(data);
 })
+// TODO:完成insert
 
 app.get("/test", (req, res, next) => {
     console.log("這是test頁面", req.dt);
